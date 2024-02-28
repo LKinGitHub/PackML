@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Machine" Id="{8f8b4044-4b54-4b05-9dcb-51655cce136f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Machine EXTENDS FB_Generic
+VAR_INPUT
+
+END_VAR
+VAR_OUTPUT
+
+END_VAR
+VAR	
+
+	
+	stSubModuleInfo		: ARRAY [1..iSubModule] OF ST_PMLSubUnitInfo;	//Informations about the Subunits
+
+
+	
+END_VAR
+VAR CONSTANT
+	iSubModule	: UDINT :=1;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//=======================fb_buffer=======================
+GVL.fb_buffer(	eModeCommand:=eModeCommand,
+				eCommand:=eCommand,
+				eMode	=>,
+				eState =>stSubModuleInfo[1].eState);			
+	
+stSubModuleInfo[1].Active		:= TRUE;
+
+IF  GVL.fb_buffer.bUndefinedDone  THEN
+	bUndefinedDone := TRUE;
+END_IF
+
+//The fbStateMachine from FB_Machine gets the Information about the states and activity from the subunits
+fbStateMachine.stSubUnitInfoRef.ArraySize		:= SIZEOF(stSubModuleInfo);
+fbStateMachine.stSubUnitInfoRef.NoOfSubUnits	:= iSubModule;
+fbStateMachine.stSubUnitInfoRef.pArray			:= ADR(stSubModuleInfo);
+
+
+
+//Set unit information 
+M_SetUnitInfo();
+
+
+SUPER^();]]></ST>
+    </Implementation>
+    <Method Name="M_Clearing" Id="{242a7bec-354c-403a-8360-5cddeab3cb27}">
+      <Declaration><![CDATA[{attribute 'object_name' := 'M_Clearing'}
+METHOD M_Clearing
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+CASE fbUnitModeManager.eModeStatus OF
+	ePMLProtUnitMode_Production:		//Production, Mantainance, Manual
+		FOR i:=1 TO MaxAlarms DO
+			GVL.pml_adminAlarm.M_AcknowledgeAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.PackTags.Admin.Alarm[i]);
+			GVL.pml_adminAlarm.M_ClearAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.PackTags.Admin.Alarm[i]);
+		END_FOR			
+		IF MAIN.application.safety.M_reset() THEN
+			IF MAIN.application.safety.xError THEN
+				eCommand	:= ePMLCommand_Abort;
+			ELSE
+				M_StateComplete();
+			END_IF
+		END_IF	
+		
+	
+	ePMLProtUnitMode_Maintenance, ePMLProtUnitMode_Manual, ePMLUnitMode_Service:
+		M_StateComplete();
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Resetting" Id="{c82aab94-be7d-4f8e-a811-07458a877516}">
+      <Declaration><![CDATA[{attribute 'object_name' := 'M_Resetting'}
+METHOD M_Resetting
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE fbUnitModeManager.eModeStatus OF
+	ePMLProtUnitMode_Production:		//Production, Mantainance, Manual	
+		IF MAIN.application.safety.M_reset() THEN
+			IF MAIN.application.safety.xError THEN
+				eCommand	:= ePMLCommand_Abort;
+			ELSE
+				M_StateComplete();
+			END_IF
+		END_IF	
+		
+	
+	ePMLProtUnitMode_Maintenance, ePMLProtUnitMode_Manual, ePMLUnitMode_Service:
+		M_StateComplete();
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_SetUnitInfo" Id="{613978d3-6a85-41f0-ad1f-b7556291b862}">
+      <Declaration><![CDATA[METHOD M_SetUnitInfo
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GVL.aUnitInfo[eMachine].Name			:= 'fbMachine';
+GVL.aUnitInfo[eMachine].ActMode			:= eMode;
+GVL.aUnitInfo[eMachine].ActState		:= eState;
+
+GVL.aUnitInfo[eBuffer].Name				:= 'fb_buffer';
+GVL.aUnitInfo[eBuffer].ActMode			:= GVL.fb_buffer.eMode;
+GVL.aUnitInfo[eBuffer].ActState			:= GVL.fb_buffer.eState;
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Starting" Id="{607735ee-5540-4bee-8bb9-efaec3726053}">
+      <Declaration><![CDATA[{attribute 'object_name' := 'M_Starting'}
+METHOD M_Starting
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE fbUnitModeManager.eModeStatus OF
+	ePMLProtUnitMode_Production:		//Production, Mantainance, Manual
+		//Resetting all Commands and Value
+		G_HMI.bAging_test	:= FALSE;
+		M_StateComplete();
+	ePMLProtUnitMode_Maintenance, ePMLProtUnitMode_Manual, ePMLUnitMode_Service:
+		M_StateComplete();
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Machine">
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="184" Count="2" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="195" Count="1" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="59" Count="5" />
+      <LineId Id="67" Count="4" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.M_Clearing">
+      <LineId Id="2" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="14" Count="10" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.M_Resetting">
+      <LineId Id="3" Count="1" />
+      <LineId Id="52" Count="5" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="45" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.M_SetUnitInfo">
+      <LineId Id="3" Count="7" />
+      <LineId Id="50" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.M_Starting">
+      <LineId Id="3" Count="2" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

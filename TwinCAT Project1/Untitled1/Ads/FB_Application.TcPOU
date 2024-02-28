@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Application" Id="{07911908-a847-4939-9523-bbe51254dbe7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Application
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	safety : FB_Safety_module;
+	tote_subsystem	: FB_Tote_Subsystem;
+	light_tower	: FB_Light_tower_module;
+	air_pressure_subsystem	: FB_AirPressure_Subsystem;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[safety();
+light_tower();
+tote_subsystem();
+air_pressure_subsystem();
+
+GVL.fb_mcp.lightTower := light_tower._lightTower;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Application">
+      <LineId Id="33" Count="1" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="36" Count="2" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

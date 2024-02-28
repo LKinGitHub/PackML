@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AirPressure_Subsystem" Id="{ee2a3eaf-27ef-4f1c-9e3b-5c87ef24b50d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AirPressure_Subsystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//current_air_pressure: INT;
+	current_air_pressure	: REAL;
+	current_air_pressure_state	: CurrentAirPressureState;
+	ton1	: TON;
+	iCase	 : INT;
+	
+	
+	iFlow	: INT;
+	rCurrent_flow	: REAL;
+	current_air_flow	: REAL;//unit: L/min
+	i1	: INT;
+END_VAR
+VAR CONSTANT
+	air_pressure_threshold_error: REAL:=0.4;//0.4*100 setting in PLC
+	air_pressure_threshold_warning: REAL:=0.5;//0.5*100 setting in PLC
+	air_pressure_threshold_overtop: REAL:=1;//1*100 setting in PLC
+	
+	rMin_voltage_flow	: REAL	:= 0.974;
+	rMax_voltage_flow	: REAL	:= 5;
+	rMaxFlow_L_per_minute		: REAL	:= 2000;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ton1(PT:=T#100MS);
+
+CASE iCase OF
+	0:
+		ton1.IN	:= TRUE;
+		IF ton1.Q THEN
+			iCase	:= 1;
+		END_IF
+	1:
+		ton1.IN	:= FALSE;
+		//current_air_pressure	:= DINT_TO_INT(GVL.iAng_air*100/16#8000);
+		current_air_pressure	:= INT_TO_REAL(GVL.iAng_air)/16#8000;
+		IF current_air_pressure<air_pressure_threshold_error THEN
+			current_air_pressure_state	:= CurrentAirPressureState.ERROR;
+		ELSIF current_air_pressure<air_pressure_threshold_warning THEN
+			current_air_pressure_state	:= CurrentAirPressureState.WARNING;
+		ELSIF current_air_pressure<air_pressure_threshold_overtop THEN
+			current_air_pressure_state	:= CurrentAirPressureState.HEALTH;
+		ELSE
+			current_air_pressure_state	:= CurrentAirPressureState.OVERTOP;
+		END_IF
+		
+		/////////////////////////////////////////////////
+
+		IF rCurrent_flow>=1 THEN
+			current_air_flow	:= rMaxFlow_L_per_minute*(rCurrent_flow-rMin_voltage_flow)/(rMax_voltage_flow-rMin_voltage_flow);
+		ELSE
+			current_air_flow	:= 0;
+		END_IF		
+		iCase	:= 0;
+	
+END_CASE
+
+		rCurrent_flow	:= INT_TO_REAL(GVL.aiFlow*10)/16#8000;
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AirPressure_Subsystem">
+      <LineId Id="47" Count="10" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="58" Count="8" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="139" Count="4" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="94" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
