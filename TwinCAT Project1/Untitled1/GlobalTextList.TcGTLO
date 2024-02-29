@@ -373,6 +373,11 @@ Complete"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"1037"</v>
+              <v n="TextDefault">"Lamp"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"473"</v>
               <v n="TextDefault">"Lift_down"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -523,6 +528,11 @@ work position"</v>
             <o>
               <v n="TextID">"30"</v>
               <v n="TextDefault">"Reseting"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"1925"</v>
+              <v n="TextDefault">"Sample"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

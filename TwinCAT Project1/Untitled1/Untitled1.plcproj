@@ -141,6 +141,9 @@
     <Compile Include="Mian\DUTs\E_LoadingStates.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mian\DUTs\E_SampleStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mian\DUTs\E_RollerStates.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -174,19 +177,16 @@
     <Compile Include="Mian\DUTs\Valve.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mian\FB_buffer_tote.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mian\FB_mcp.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mian\FB_roller_tote.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mian\FB_Generic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mian\FB_Machine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mian\FB_Sample.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mian\FB_Visu.TcPOU">
@@ -228,15 +228,15 @@
       <SubType>Code</SubType>
       <DependentUpon>VisualizationManager.TcVMO</DependentUpon>
     </Compile>
-    <Compile Include="VISUs\VISUs\visu_buffer.TcVIS">
+    <Compile Include="VISUs\VISUs\visu_sample.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>VisualizationManager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\VISUs\visu_manual.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>VisualizationManager.TcVMO</DependentUpon>
     </Compile>
     <Compile Include="VISUs\VISUs\visu_operation.TcVIS">
-      <SubType>Code</SubType>
-      <DependentUpon>VisualizationManager.TcVMO</DependentUpon>
-    </Compile>
-    <Compile Include="VISUs\VISUs\v_io_buffer.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>VisualizationManager.TcVMO</DependentUpon>
     </Compile>

@@ -184,9 +184,9 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[M_reset	:= FALSE;
-xError	:= FALSE;//for test
-M_reset	:= TRUE;
-RETURN;
+xError	:= FALSE;//remove while safety is ready
+M_reset	:= TRUE;//remove while safety is ready
+RETURN;//remove while safety is ready
 //check if all estop
 //check if safety door ossd
 //check if safety door closed

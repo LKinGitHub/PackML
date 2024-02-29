@@ -78,37 +78,7 @@ IF fbMachine.bUndefinedDone AND NOT bMachineStartedUp THEN
 	GVL.PackTags.Command.CntrlCmd	:= ePMLCommand_Abort;
 	bMachineStartedUp			:= TRUE;
 END_IF
-rTrig_agingTest(CLK:= G_HMI.bAging_test);
-fTrig_agingTest(CLK:= G_HMI.bAging_test);
-refStates_fb_roller_0 REF= GVL.fb_buffer.fb_rollers[0].eStates;
-refStates_fb_roller_1 REF= GVL.fb_buffer.fb_rollers[1].eStates;
-refStates_fb_roller_2 REF= GVL.fb_buffer.fb_rollers[2].eStates;
-refStates_fb_roller_3 REF= GVL.fb_buffer.fb_rollers[3].eStates;
 
-
-IF rTrig_agingTest.Q THEN
-	refStates_fb_roller_0	:= 0;
-	refStates_fb_roller_1	:= 0;
-	refStates_fb_roller_2	:= 0;
-	refStates_fb_roller_3	:= 0;
-	refStates_fb_loading	:= 0;
-	refStates_fb_working	:= 0;
-	G_HMI.bAging_buffer		:= TRUE;
-	G_HMI.bAging_loading	:= TRUE;
-	G_HMI.bAging_working	:= TRUE;
-	
-END_IF
-IF fTrig_agingTest.Q THEN
-	refStates_fb_roller_0	:= 0;
-	refStates_fb_roller_1	:= 0;
-	refStates_fb_roller_2	:= 0;
-	refStates_fb_roller_3	:= 0;
-	refStates_fb_loading	:= 0;
-	refStates_fb_working	:= 0;
-	G_HMI.bAging_buffer		:= FALSE;
-	G_HMI.bAging_loading	:= FALSE;
-	G_HMI.bAging_working	:= FALSE;	
-END_IF
 
 GVL.bButtonProductionReq := GVL.PackTags.Command.UnitMode = ePMLProtUnitMode_Production AND GVL.PackTags.Status.UnitModeCurrent <> GVL.PackTags.Command.UnitMode;
 
@@ -254,14 +224,8 @@ END_VAR
         <ST><![CDATA[//Calling FB_Visu
 fbVisu(
 
-
-	bReset					:= ,
 	aKeyPressed				:= GVL.aKeyPressed,
-	aUnitInfo				:= GVL.aUnitInfo,
-	fYClamp					=> , 
-	fYBarrier				=> , 
-	fYMetal					=> , 
-	fYPlastic				=> , 
+	aUnitInfo				:= GVL.aUnitInfo, 
 	bInvalidEntry			=> ,
 	aCaption				=> GVL.aCaption,
 	eModeVisu				=> ,
@@ -283,6 +247,12 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[M_CheckError	:= FALSE;
+FOR i:=1 TO GlobalParameters.MaxAlarms DO
+	IF GVL.PackTags.Admin.Alarm[i].Trigger THEN
+		M_CheckError	:= TRUE;
+	END_IF
+END_FOR
+RETURN;//remove this while safety and air is ready
 rTrig_error[0]();
 rTrig_error[1]();
 IF GVL.PackTags.Status.StateCurrent<>E_PMLState.ePMLState_Resetting THEN
@@ -311,11 +281,7 @@ IF application.safety.xError OR application.air_pressure_subsystem.current_air_p
 	M_CheckError	:= TRUE;
 END_IF
 
-FOR i:=1 TO GlobalParameters.MaxAlarms DO
-	IF GVL.PackTags.Admin.Alarm[i].Trigger THEN
-		M_CheckError	:= TRUE;
-	END_IF
-END_FOR
+
 
 ]]></ST>
       </Implementation>
@@ -335,20 +301,12 @@ GVL.PackTags.Command.Parameter[1].ID				:= 1;
 GVL.PackTags.Command.Parameter[1].Name				:= 'Quantity';
 GVL.PackTags.Command.Parameter[1].Unit				:= 'Tote';
 
-//Countig produced totes, see FB_buffer
+//Countig produced totes, see FB_sample
 GVL.PackTags.Admin.ProdProcessedCount[1].ID			:= 1;
-GVL.PackTags.Admin.ProdProcessedCount[1].Name		:= 'ToteFinishBuffer';
+GVL.PackTags.Admin.ProdProcessedCount[1].Name		:= 'ToteFinish_Sample';
 GVL.PackTags.Admin.ProdProcessedCount[1].Unit		:= 'Tote';
 
-//Countig produced totes, see FB_loading
-GVL.PackTags.Admin.ProdProcessedCount[2].ID			:= 2;
-GVL.PackTags.Admin.ProdProcessedCount[2].Name		:= 'ToteFinishLoading';
-GVL.PackTags.Admin.ProdProcessedCount[2].Unit		:= 'Tote';
 
-//Countig produced totes, see FB_working
-GVL.PackTags.Admin.ProdProcessedCount[3].ID			:= 3;
-GVL.PackTags.Admin.ProdProcessedCount[3].Name		:= 'ToteFinishWorking';
-GVL.PackTags.Admin.ProdProcessedCount[3].Unit		:= 'Tote';
 
 
 
@@ -375,8 +333,6 @@ GVL.PackTags.Admin.PlcDateTime[6]	:= fbLocalSystemTime.systemTime.wMilliseconds;
 fbTrigger(CLK:= (fbMachine.eState = ePMLState_Complete));
 IF fbTrigger.Q OR GVL.stChangeIntoProduction.bYesReset THEN
 	GVL.PackTags.Admin.ProdProcessedCount[1].Count	:= 0;
-	GVL.PackTags.Admin.ProdProcessedCount[2].Count	:= 0;
-	GVL.PackTags.Admin.ProdProcessedCount[3].Count	:= 0;
 	GVL.PackTags.Command.Parameter[1].Value			:= 0;
 	GVL.nVisuProductCommand							:= 0;
 END_IF
@@ -424,26 +380,8 @@ END_IF
       <LineId Id="211" Count="0" />
       <LineId Id="332" Count="0" />
       <LineId Id="341" Count="0" />
-      <LineId Id="3" Count="8" />
-      <LineId Id="522" Count="0" />
-      <LineId Id="524" Count="0" />
-      <LineId Id="536" Count="2" />
-      <LineId Id="548" Count="0" />
-      <LineId Id="532" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="511" Count="0" />
-      <LineId Id="539" Count="1" />
-      <LineId Id="518" Count="0" />
-      <LineId Id="544" Count="0" />
-      <LineId Id="520" Count="0" />
-      <LineId Id="558" Count="0" />
-      <LineId Id="560" Count="1" />
-      <LineId Id="559" Count="0" />
-      <LineId Id="512" Count="0" />
-      <LineId Id="551" Count="6" />
-      <LineId Id="564" Count="1" />
-      <LineId Id="562" Count="0" />
-      <LineId Id="550" Count="0" />
+      <LineId Id="3" Count="7" />
+      <LineId Id="626" Count="0" />
       <LineId Id="14" Count="2" />
       <LineId Id="55" Count="0" />
       <LineId Id="223" Count="1" />
@@ -511,13 +449,15 @@ END_IF
     </LineIds>
     <LineIds Name="MAIN.M_CallVisu">
       <LineId Id="3" Count="1" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="12" Count="7" />
+      <LineId Id="13" Count="2" />
       <LineId Id="28" Count="6" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.M_CheckError">
       <LineId Id="15" Count="0" />
+      <LineId Id="79" Count="3" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="83" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="64" Count="0" />
       <LineId Id="40" Count="3" />
@@ -533,17 +473,15 @@ END_IF
       <LineId Id="27" Count="1" />
       <LineId Id="16" Count="0" />
       <LineId Id="35" Count="0" />
-      <LineId Id="5" Count="1" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="9" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="25" Count="1" />
     </LineIds>
     <LineIds Name="MAIN.M_SetPackTags">
       <LineId Id="3" Count="0" />
       <LineId Id="19" Count="4" />
-      <LineId Id="60" Count="15" />
-      <LineId Id="79" Count="26" />
+      <LineId Id="60" Count="5" />
+      <LineId Id="74" Count="1" />
+      <LineId Id="79" Count="24" />
       <LineId Id="107" Count="3" />
       <LineId Id="2" Count="0" />
     </LineIds>

@@ -3,55 +3,33 @@
   <GVL Name="GVL" Id="{467ff484-abc3-43b3-a376-da9ea4486a4c}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	
-	devState AT%I*	: UINT;
-	arrPD_IN	 AT%I*	: ARRAY[0..31] OF BYTE;
-	arrPD_OUT	 AT%Q*	: ARRAY[0..31] OF BYTE;
 
-	fb_buffer	: FB_buffer_tote;
-	
 	fb_mcp		: FB_mcp;
 	
 	status	: MachineStatus := MachineStatus.STOPPED;
-
-	
-
 	
 	iAng_air AT%I* :INT;
 	aiFlow AT%I* :INT;
-	
-	byteIn 	AT%I*	: ARRAY[0..1] OF BYTE;
-	byteOut AT%Q*	: ARRAY[0..1] OF BYTE;	
-	
-	
-	
-	
-	
-	
-	
-	
 
 
-		PackTags					: ST_PackMLv30;					//PackTags
+	PackTags					: ST_PackMLv30;					//PackTags
 
-		nVisuProductCommand			: DINT;							//Products to produce
+	nVisuProductCommand			: DINT;							//Products to produce
 
-		bButtonProductionReq		: BOOL;							//TRUE when a mode change to PRODUCTION is requested
-		stChangeIntoProduction		: ST_ChangeIntoProduction;		//Result of command box "Change to Production requested"
+	bButtonProductionReq		: BOOL;							//TRUE when a mode change to PRODUCTION is requested
+	stChangeIntoProduction		: ST_ChangeIntoProduction;		//Result of command box "Change to Production requested"
 
-		aUnitInfo					: ARRAY [1..12] OF ST_UnitInfo;	//Array includes the states and modes of machineunits	
-		aCaption					: ARRAY [1..12] OF STRING := ['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'];
-		aKeyPressed					: ARRAY [1..12] OF BOOL;		
+	aUnitInfo					: ARRAY [1..12] OF ST_UnitInfo;	//Array includes the states and modes of machineunits	
+	aCaption					: ARRAY [1..12] OF STRING := ['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'];
+	aKeyPressed					: ARRAY [1..12] OF BOOL;		
 	
-		alarm_empty		: ST_Alarm;
-		alarm_temp		: ST_Alarm;
-		str				: STRING;
-		pml_adminAlarm	: PML_AdminAlarm;		
+	alarm_empty		: ST_Alarm;
+	alarm_temp		: ST_Alarm;
+	str				: STRING;
+	pml_adminAlarm	: PML_AdminAlarm;		
 	
-	
-	
-	
-	
+
+	fb_sample	: FB_Sample;
 	
 END_VAR
 VAR_GLOBAL CONSTANT

@@ -1941,7 +1941,8 @@
                     </o>
                     <o>
                       <v n="Id">390574330L</v>
-                      <v n="Value">"%s"</v>
+                      <v n="Value">"State Model
+%s"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -1957,7 +1958,7 @@
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
-                      <v n="Value">"201"</v>
+                      <v n="Value">"67"</v>
                     </o>
                   </l>
                 </o>
@@ -2119,7 +2120,8 @@
                     </o>
                     <o>
                       <v n="Id">390574330L</v>
-                      <v n="Value">"%s"</v>
+                      <v n="Value">"State Model
+%s"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -2135,7 +2137,7 @@
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
-                      <v n="Value">"201"</v>
+                      <v n="Value">"67"</v>
                     </o>
                   </l>
                 </o>
@@ -2339,7 +2341,18 @@
             <l2 n="Inputs" />
           </o>
           <o n="VisuSizeManager" t="VisualObjectSizeManager">
-            <n n="Size" />
+            <d2 n="Size" ckt="Int32" cvt="VisualObjectSize">
+              <v>0</v>
+              <o>
+                <v n="Width">1024</v>
+                <v n="Height">100</v>
+              </o>
+              <v>1</v>
+              <o>
+                <v n="Width">1025</v>
+                <v n="Height">100</v>
+              </o>
+            </d2>
             <v n="Version">0</v>
           </o>
         </o>
@@ -2373,6 +2386,7 @@
         <Type n="VisualElemMemberCollection">{a4b83bea-3742-489c-9fe8-d96d68dba7ab}</Type>
         <Type n="VisualElemMemberList">{17e26cd1-bb9b-47fe-a3d5-18fcd63b9c96}</Type>
         <Type n="VisualObject">{f18bec89-9fef-401d-9953-2f11739a6808}</Type>
+        <Type n="VisualObjectSize">{6ad3e88f-aee2-4766-a7ea-a8790037ef51}</Type>
         <Type n="VisualObjectSizeManager">{5f612b0e-b404-455f-8177-27864e9f5332}</Type>
       </TypeList>
     </XmlArchive>

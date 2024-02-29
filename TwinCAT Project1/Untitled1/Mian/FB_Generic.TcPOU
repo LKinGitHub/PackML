@@ -25,6 +25,10 @@ VAR
 	packTags				: ST_PackMLv30;
 	i	: INT;
 	
+	ton_timeout			: TON;
+	
+	rTrig_electricalError	:ARRAY[0..10] OF R_TRIG;
+	
 	
 END_VAR
 ]]></Declaration>

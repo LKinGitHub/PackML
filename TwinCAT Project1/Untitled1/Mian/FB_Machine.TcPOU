@@ -15,20 +15,23 @@ VAR
 
 
 	
+	
 END_VAR
 VAR CONSTANT
 	iSubModule	: UDINT :=1;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//=======================fb_buffer=======================
-GVL.fb_buffer(	eModeCommand:=eModeCommand,
-				eCommand:=eCommand,
-				eMode	=>,
-				eState =>stSubModuleInfo[1].eState);			
-	
-stSubModuleInfo[1].Active		:= TRUE;
+      <ST><![CDATA[GVL.fb_sample(
+	eModeCommand:= eModeCommand, 
+	eCommand:= eCommand, 
+	eMode=> , 
+	eState=> stSubModuleInfo[iSubModule].eState, 
+	bUndefinedDone=> , 
+	bInvalidModeCommandOut=> , 
+	bChangeIntoProduction=> );
+stSubModuleInfo[iSubModule].Active		:= TRUE;
 
-IF  GVL.fb_buffer.bUndefinedDone  THEN
+IF  GVL.fb_sample.bUndefinedDone  THEN
 	bUndefinedDone := TRUE;
 END_IF
 
@@ -102,9 +105,9 @@ END_VAR
 GVL.aUnitInfo[eMachine].ActMode			:= eMode;
 GVL.aUnitInfo[eMachine].ActState		:= eState;
 
-GVL.aUnitInfo[eBuffer].Name				:= 'fb_buffer';
-GVL.aUnitInfo[eBuffer].ActMode			:= GVL.fb_buffer.eMode;
-GVL.aUnitInfo[eBuffer].ActState			:= GVL.fb_buffer.eState;
+GVL.aUnitInfo[eSample].Name				:= 'fb_sample';
+GVL.aUnitInfo[eSample].ActMode			:= GVL.fb_sample.eMode;
+GVL.aUnitInfo[eSample].ActState			:= GVL.fb_sample.eState;
 
 ]]></ST>
       </Implementation>
@@ -125,11 +128,10 @@ END_CASE]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Machine">
-      <LineId Id="3" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="184" Count="2" />
-      <LineId Id="14" Count="1" />
+      <LineId Id="215" Count="6" />
+      <LineId Id="15" Count="0" />
       <LineId Id="58" Count="0" />
+      <LineId Id="222" Count="0" />
       <LineId Id="195" Count="1" />
       <LineId Id="102" Count="0" />
       <LineId Id="59" Count="5" />

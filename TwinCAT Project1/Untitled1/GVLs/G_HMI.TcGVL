@@ -5,16 +5,9 @@
 VAR_GLOBAL
 	iMainFrame 		: INT;
 	iPML_mainFrame	: INT;
-	bReset			: BOOL;
-	bRun			: BOOL;
-	bStop			: BOOL;
-	bPause			: BOOL;
+
 	bInit			: BOOL;
 	bAging_test		: BOOL	:= FALSE;
-	bAging_buffer		: BOOL	:= FALSE;
-	bAging_loading		: BOOL	:= FALSE;
-	bAging_working		: BOOL	:= FALSE;
-	
 	
 	sLoginnedUser	: STRING;
 END_VAR]]></Declaration>
