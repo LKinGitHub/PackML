@@ -75,6 +75,9 @@ METHOD M_Execute
 		ELSE
 			ton_timeout.IN	:=FALSE;
 			eStateTemp	:= eStates;	
+			IF ton_timeout.Q THEN
+				RETURN;
+			END_IF
 		END_IF
 		IF ton_timeout.Q THEN	
 			ton_timeout.IN	:=FALSE;
@@ -299,7 +302,9 @@ bUndefinedDone					:= TRUE;]]></ST>
       <LineId Id="5" Count="1" />
       <LineId Id="136" Count="0" />
       <LineId Id="187" Count="0" />
-      <LineId Id="145" Count="9" />
+      <LineId Id="145" Count="5" />
+      <LineId Id="226" Count="2" />
+      <LineId Id="151" Count="3" />
       <LineId Id="206" Count="0" />
       <LineId Id="219" Count="1" />
       <LineId Id="218" Count="0" />
