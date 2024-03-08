@@ -72,6 +72,7 @@ Id;Default
 136;inbound
 44;INIT
 4;Invalid
+1037;Lamp
 473;Lift_down
 293;Lift_iuo
 316;Lift_up
@@ -102,6 +103,7 @@ Id;Default
 1051;Production
 57;Reset the Visu
 30;Reseting
+1925;Sample
 36;SC
 1012;sensor[0]
 1257;sensor[1]

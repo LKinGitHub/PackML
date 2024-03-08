@@ -28,7 +28,7 @@ VAR
 	ton_timeout			: TON;
 	
 	rTrig_electricalError	:ARRAY[0..10] OF R_TRIG;
-	
+	alarm_temp		: ST_Alarm;
 	
 END_VAR
 ]]></Declaration>

@@ -88,17 +88,18 @@ METHOD M_Execute
 				E_SampleStates.WAIT_OFF:
 					;			
 				E_SampleStates.ERROR:	
-					GVL.alarm_temp.Message	:= 'Sample in error state';
+					alarm_temp.Message	:= 'Sample in error state';
 				ELSE
-					GVL.alarm_temp.Message	:= 'UNKNOWN STATES in Sample module';
+					alarm_temp.Message	:= 'UNKNOWN STATES in Sample module';
 			END_CASE
 			IF eStates<>E_SampleStates.IDLE AND eStates<>E_SampleStates.WAIT_ON AND eStates<>E_SampleStates.WAIT_OFF THEN
-				GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.alarm_temp);
+				GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=alarm_temp);
 			END_IF
 		END_IF
 		
 		CASE eStates OF 
-				E_SampleStates.IDLE:						
+				E_SampleStates.IDLE:
+					ton_timeout.PT	:= T#1MS;						
 					eStates	:= E_SampleStates.INIT;				
 				E_SampleStates.INIT:
 					ton_timeout.PT	:= T#1S;
@@ -231,12 +232,12 @@ METHOD M_Stopping
 				E_SampleStates.WAIT_OFF:
 					;			
 				E_SampleStates.ERROR:	
-					GVL.alarm_temp.Message	:= 'Sample in error state';
+					alarm_temp.Message	:= 'Sample in error state';
 				ELSE
-					GVL.alarm_temp.Message	:= 'UNKNOWN STATES in Sample module';
+					alarm_temp.Message	:= 'UNKNOWN STATES in Sample module';
 			END_CASE
 			IF eStates<>E_SampleStates.IDLE AND eStates<>E_SampleStates.WAIT_ON AND eStates<>E_SampleStates.WAIT_OFF THEN
-				GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.alarm_temp);
+				GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=alarm_temp);
 			END_IF
 		END_IF
 		
@@ -306,6 +307,7 @@ bUndefinedDone					:= TRUE;]]></ST>
       <LineId Id="215" Count="2" />
       <LineId Id="155" Count="1" />
       <LineId Id="171" Count="9" />
+      <LineId Id="223" Count="0" />
       <LineId Id="182" Count="3" />
       <LineId Id="189" Count="0" />
       <LineId Id="197" Count="0" />

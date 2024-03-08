@@ -2084,11 +2084,16 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{6D202D54-030C-410D-B649-C97C3EE97249}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{0A94EC9A-32A3-4137-2E1C-C13963C3629B}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{6D46749D-35DF-6D00-24F7-BD1CB7AFEBA3}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>MianTask Inputs</Name>
+						<Var>
+							<Name>GVL_IOLink.SI0_0</Name>
+							<Comment><![CDATA[eStop1/2_NC1	急停1/2_NC1          ]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
 						<Var>
 							<Name>GVL.iAng_air</Name>
 							<Type>INT</Type>
@@ -2098,29 +2103,9 @@ External Setpoint Generation:
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_IOLink.SI0_0</Name>
-							<Comment><![CDATA[eStop1/2_NC1	急停1/2_NC1          ]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>GVL_IOLink.SI0_1</Name>
 							<Comment><![CDATA[eStop1/2_NC2	急停1/2_NC2          ]]></Comment>
 							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>G_IO.arDI</Name>
-							<Comment><![CDATA[  links to Digital input  Modules ]]></Comment>
-							<Type GUID="{31F8C4A4-BE52-1ED2-E4A7-CCF89018F754}">ARRAY [0..10] OF ST_IO_16</Type>
-						</Var>
-						<Var>
-							<Name>G_IO.arSI</Name>
-							<Comment><![CDATA[  links to safety input  Modules]]></Comment>
-							<Type GUID="{AE172D22-CE17-1448-D634-BA27C14FD0A8}">ARRAY [0..10] OF ST_SafetyIO</Type>
-						</Var>
-						<Var>
-							<Name>G_IO.arSO</Name>
-							<Comment><![CDATA[  links to safety output  Modules]]></Comment>
-							<Type GUID="{AE172D22-CE17-1448-D634-BA27C14FD0A8}">ARRAY [0..10] OF ST_SafetyIO</Type>
 						</Var>
 						<Var>
 							<Name>GVL_IOLink.SI0_2</Name>
@@ -2300,14 +2285,24 @@ External Setpoint Generation:
 							<Comment><![CDATA[安全端口错误]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
+						<Var>
+							<Name>G_IO.arDI</Name>
+							<Comment><![CDATA[  links to Digital input  Modules ]]></Comment>
+							<Type GUID="{31F8C4A4-BE52-1ED2-E4A7-CCF89018F754}">ARRAY [0..10] OF ST_IO_16</Type>
+						</Var>
+						<Var>
+							<Name>G_IO.arSI</Name>
+							<Comment><![CDATA[  links to safety input  Modules]]></Comment>
+							<Type GUID="{AE172D22-CE17-1448-D634-BA27C14FD0A8}">ARRAY [0..10] OF ST_SafetyIO</Type>
+						</Var>
+						<Var>
+							<Name>G_IO.arSO</Name>
+							<Comment><![CDATA[  links to safety output  Modules]]></Comment>
+							<Type GUID="{AE172D22-CE17-1448-D634-BA27C14FD0A8}">ARRAY [0..10] OF ST_SafetyIO</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>MianTask Outputs</Name>
-						<Var>
-							<Name>G_IO.arDO</Name>
-							<Comment><![CDATA[  links to Digital output Modules	]]></Comment>
-							<Type GUID="{31F8C4A4-BE52-1ED2-E4A7-CCF89018F754}">ARRAY [0..10] OF ST_IO_16</Type>
-						</Var>
 						<Var>
 							<Name>GVL_IOLink.b_GroupRun</Name>
 							<Comment><![CDATA[安全模块运行]]></Comment>
@@ -2361,6 +2356,11 @@ External Setpoint Generation:
 							<Name>GVL_IOLink.Rolller_belt_STO_EDM</Name>
 							<Comment><![CDATA[滚筒STO反馈]]></Comment>
 							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>G_IO.arDO</Name>
+							<Comment><![CDATA[  links to Digital output Modules	]]></Comment>
+							<Type GUID="{31F8C4A4-BE52-1ED2-E4A7-CCF89018F754}">ARRAY [0..10] OF ST_IO_16</Type>
 						</Var>
 					</Vars>
 					<UnrestoredVarLinks ImportTime="2023-04-15T15:06:24">

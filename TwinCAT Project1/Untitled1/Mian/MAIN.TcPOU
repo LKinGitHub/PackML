@@ -258,19 +258,19 @@ rTrig_error[1]();
 IF GVL.PackTags.Status.StateCurrent<>E_PMLState.ePMLState_Resetting THEN
 	FOR i:=0 TO 10 DO
 		IF rTrig_error[i].Q THEN
-			GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.alarm_temp);
+			GVL.pml_adminAlarm.M_SetAlarm(stAdmin:=GVL.PackTags.Admin,stAlarm:=GVL.alarm);
 		END_IF
 	END_FOR
 END_IF
 
 IF application.air_pressure_subsystem.current_air_pressure_state=CurrentAirPressureState.ERROR THEN
-	GVL.alarm_temp.Message	:= 'Air pressure is low';
+	GVL.alarm.Message	:= 'Air pressure is low';
 	rTrig_error[0].CLK	:= TRUE;
 ELSE
 	rTrig_error[0].CLK	:= FALSE;
 END_IF
 IF application.safety.xError THEN
-	GVL.alarm_temp.Message	:= 'Safety input trigger';
+	GVL.alarm.Message	:= 'Safety input trigger';
 	rTrig_error[1].CLK	:= TRUE;
 ELSE
 	rTrig_error[1].CLK	:= FALSE;

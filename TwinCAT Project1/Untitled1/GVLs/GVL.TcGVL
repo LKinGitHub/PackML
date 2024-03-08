@@ -24,7 +24,7 @@ VAR_GLOBAL
 	aKeyPressed					: ARRAY [1..12] OF BOOL;		
 	
 	alarm_empty		: ST_Alarm;
-	alarm_temp		: ST_Alarm;
+	alarm			: ST_Alarm;
 	str				: STRING;
 	pml_adminAlarm	: PML_AdminAlarm;		
 	
