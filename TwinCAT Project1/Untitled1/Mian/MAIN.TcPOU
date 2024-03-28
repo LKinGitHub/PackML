@@ -51,14 +51,11 @@ VAR
 	rTrig_error	:ARRAY[0..10] OF R_TRIG;
 	rTrig_agingTest	:R_TRIG;
 	fTrig_agingTest	:F_TRIG;
-	refStates_fb_roller_0 : REFERENCE TO E_RollerStates;
-	refStates_fb_roller_1 : REFERENCE TO E_RollerStates;
-	refStates_fb_roller_2 : REFERENCE TO E_RollerStates;
-	refStates_fb_roller_3 : REFERENCE TO E_RollerStates;
-	refStates_fb_loading  : REFERENCE TO E_LoadingStates;
-	refStates_fb_working  : REFERENCE TO E_WorkingStates;
+
 	
-	
+	topicCallbackTest	: E_Topics;
+	dataCallbackTest	: PubSubData;
+	topic_sample	: E_topic_sample;
 	
 END_VAR
 ]]></Declaration>
@@ -182,7 +179,26 @@ IF GVL.PackTags.Command.UnitMode=ePMLProtUnitMode_Invalid THEN
 END_IF
 //Call FB_Machine
 fbMachine(eModeCommand:= GVL.PackTags.Command.UnitMode,  eMode => GVL.PackTags.Status.UnitModeCurrent, eState =>GVL.PackTags.Status.StateCurrent);
-]]></ST>
+
+
+//
+CASE topicCallbackTest OF
+	E_Topics.SAMPLE_SUBSCRRIBE_1:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='start publich test 1',strArg:='');
+		dataCallbackTest.Topic	:= SAMPLE_SUBSCRRIBE_1;
+		GVL.PubSubService.Publish(topic:= E_Topics.SAMPLE_SUBSCRRIBE_1,data:= dataCallbackTest);
+		topicCallbackTest	:= E_Topics.UNKNOWN;
+	E_Topics.SAMPLE_SUBSCRRIBE_2:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='start publich test 2',strArg:='');
+		dataCallbackTest.Topic	:= SAMPLE_SUBSCRRIBE_2;
+		GVL.PubSubService.Publish(topic:= E_Topics.SAMPLE_SUBSCRRIBE_2,data:= dataCallbackTest);
+		topicCallbackTest	:= E_Topics.UNKNOWN;	
+	E_Topics.SAMPLE_SUBSCRRIBE_3:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='start publich test 3',strArg:='');
+		dataCallbackTest.Topic	:= SAMPLE_SUBSCRRIBE_3;
+		GVL.PubSubService.Publish(topic:= E_Topics.SAMPLE_SUBSCRRIBE_3,data:= dataCallbackTest);
+		topicCallbackTest	:= E_Topics.UNKNOWN;	
+END_CASE]]></ST>
     </Implementation>
     <Action Name="A_UnitModeConfig" Id="{22b649e9-a085-4601-8ad9-54522ade47b0}">
       <Implementation>
@@ -441,7 +457,14 @@ END_IF
       <LineId Id="455" Count="0" />
       <LineId Id="74" Count="0" />
       <LineId Id="2" Count="0" />
+      <LineId Id="688" Count="1" />
       <LineId Id="109" Count="0" />
+      <LineId Id="690" Count="0" />
+      <LineId Id="692" Count="0" />
+      <LineId Id="749" Count="2" />
+      <LineId Id="739" Count="9" />
+      <LineId Id="714" Count="0" />
+      <LineId Id="693" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.A_UnitModeConfig">
       <LineId Id="2" Count="25" />

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_Topics" Id="{87ba00ba-dac7-44ae-b312-6cedb0810b04}">
+    <Declaration><![CDATA[TYPE E_Topics :
+(
+	UNKNOWN 				:= 0, 
+	SAMPLE_SUBSCRRIBE_1		:= 1, 
+	SAMPLE_SUBSCRRIBE_2		:= 2, 
+	SAMPLE_SUBSCRRIBE_3		:= 3,
+	NUMBER_OF_TOPICS
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

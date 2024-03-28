@@ -18,8 +18,35 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[SUPER^();
+IF NOT subscribed THEN
+	GVL.PubSubService.Subscribe(E_Topics.SAMPLE_SUBSCRRIBE_1,THIS^);
+	GVL.PubSubService.Subscribe(E_Topics.SAMPLE_SUBSCRRIBE_2,THIS^);
+	GVL.PubSubService.Subscribe(E_Topics.SAMPLE_SUBSCRRIBE_3,THIS^);
+END_IF
+subscribed	:= TRUE;
 ]]></ST>
     </Implementation>
+    <Method Name="Callback" Id="{13854ea2-63bf-4c04-b365-8df7edd8bd07}">
+      <Declaration><![CDATA[(*
+Description: 
+the callback that will be invoked when there is a publish for what the subscriber was subscribed to.
+*)
+METHOD Callback
+VAR_INPUT
+	data : PubSubData;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE data.Topic OF
+	E_Topics.SAMPLE_SUBSCRRIBE_1:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='get data from publish 1',strArg:='');
+	E_Topics.SAMPLE_SUBSCRRIBE_2:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='get data from publish 2',strArg:='');
+	E_Topics.SAMPLE_SUBSCRRIBE_3:
+		ADSLOGSTR(msgCtrlMask:= ADSLOG_MSGTYPE_LOG,msgFmtStr:='get data from publish 3',strArg:='');		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_Aborting" Id="{f930da81-89da-4559-a375-c186df3db1b8}">
       <Declaration><![CDATA[{attribute 'object_name' := 'M_Aborting'}
 METHOD M_Aborting
@@ -281,7 +308,21 @@ bUndefinedDone					:= TRUE;]]></ST>
     </Method>
     <LineIds Name="FB_Sample">
       <LineId Id="9" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="29" Count="0" />
       <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Sample.Callback">
+      <LineId Id="10" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="12" Count="0" />
     </LineIds>
     <LineIds Name="FB_Sample.M_Aborting">
       <LineId Id="3" Count="1" />
@@ -365,7 +406,7 @@ bUndefinedDone					:= TRUE;]]></ST>
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Sample.M_Undefined">
-      <LineId Id="4" Count="0" />
+      <LineId Id="10" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

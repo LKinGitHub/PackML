@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PubSubService" Id="{c1ca663d-d24d-4b74-97d3-9fc5bb4f757d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PubSubService IMPLEMENTS I_PubSubService
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+
+VAR
+	TopicsToSubscribers : ARRAY[0..MAX_TOPICS - 1, 0..MAX_SUBSCRIBERS_PER_TOPIC - 1] OF SubscriberCell;
+	subscriberCounters : ARRAY [0..MAX_TOPICS - 1] OF INT;
+END_VAR
+
+VAR CONSTANT 
+	MAX_SUBSCRIBERS_PER_TOPIC : INT := 20;
+	{attribute 'analysis' := '-33'}
+	MAX_TOPICS : INT := E_Topics.NUMBER_OF_TOPICS;
+END_VAR ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Publish" Id="{8cb0105a-f163-40f5-bbb7-d6346a4460f1}">
+      <Declaration><![CDATA[METHOD Publish
+VAR_INPUT
+	topic	: E_Topics;
+	data	: PubSubData;
+END_VAR
+VAR
+	index : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR index := 0 TO MAX_SUBSCRIBERS_PER_TOPIC -1 BY 1 DO
+	IF TopicsToSubscribers[topic, index].OCCUPIED = TRUE THEN
+		TopicsToSubscribers[topic, index].subscriber.Callback(data);
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Subscribe" Id="{ba2230aa-7438-48f4-b45d-8788c93cf06a}">
+      <Declaration><![CDATA[METHOD Subscribe : INT
+VAR_INPUT
+	topic	: E_Topics;
+	subCallback	: I_SubCallback;
+END_VAR
+VAR 
+	index : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Subscribe := -1;
+
+IF  subscriberCounters[topic] >= MAX_SUBSCRIBERS_PER_TOPIC THEN
+	RETURN;
+END_IF
+
+FOR index := 0 TO (MAX_SUBSCRIBERS_PER_TOPIC - 1) BY 1 DO
+	IF TopicsToSubscribers[topic, index].occupied = FALSE THEN
+		TopicsToSubscribers[topic, index].occupied := TRUE;
+		TopicsToSubscribers[topic, index].subscriber := subCallback;
+		Subscribe := index;
+		subscriberCounters[topic] := subscriberCounters[topic] + 1;
+		RETURN;
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Unsubscribe" Id="{fe1f058b-cb54-4499-94ae-fb021fb9302a}">
+      <Declaration><![CDATA[METHOD Unsubscribe
+VAR_INPUT
+	topic : E_Topics;
+	subscriberID	: INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF TopicsToSubscribers[topic, subscriberID].occupied = TRUE THEN
+	TopicsToSubscribers[topic, subscriberID].occupied := FALSE;
+	subscriberCounters[topic] := subscriberCounters[topic] - 1; 	
+END_IF 
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="PubSubService">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="PubSubService.Publish">
+      <LineId Id="10" Count="3" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="PubSubService.Subscribe">
+      <LineId Id="9" Count="13" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="PubSubService.Unsubscribe">
+      <LineId Id="8" Count="3" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

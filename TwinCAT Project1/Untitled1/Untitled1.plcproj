@@ -147,6 +147,9 @@
     <Compile Include="Mian\DUTs\E_RollerStates.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mian\DUTs\E_topic_sample.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mian\DUTs\E_Transfer.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -196,6 +199,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mian\statemachine\Prepare_Date_Time.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\E_Topics.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\I_PubSubService.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\I_SubCallback.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\KeyAndValue.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\PubSubData.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\PubSubService.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PubSub\SubscriberCell.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="VisualizationManager.TcVMO">
@@ -259,6 +283,7 @@
     <Folder Include="Mian\axis" />
     <Folder Include="Mian\DUTs" />
     <Folder Include="Mian\statemachine" />
+    <Folder Include="PubSub" />
     <Folder Include="VISUs" />
     <Folder Include="Mian" />
     <Folder Include="VISUs\Templates" />

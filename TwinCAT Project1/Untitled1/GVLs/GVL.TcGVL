@@ -31,10 +31,12 @@ VAR_GLOBAL
 
 	fb_sample	: FB_Sample;
 	
+	PubSubService	: PubSubService;
 END_VAR
 VAR_GLOBAL CONSTANT
 	iAlarm_max	:INT	:= 19;
 	rAir_setting	: REAL	:=0.4;
+	MAX_PUB_SUB_DATA	: INT:=19;
 END_VAR
 ]]></Declaration>
   </GVL>
