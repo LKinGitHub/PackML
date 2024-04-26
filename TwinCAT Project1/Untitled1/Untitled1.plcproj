@@ -195,6 +195,9 @@
     <Compile Include="Mian\FB_Visu.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mian\I_Common.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mian\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
