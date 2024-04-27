@@ -10,7 +10,7 @@ VAR
 	lamp			: BOOL;	
 	eStates			: E_SampleStates := E_SampleStates.IDLE;;
 	eStateTemp		: E_SampleStates := E_SampleStates.IDLE;
-	iStateTemp		: INT;	
+	
 END_VAR
 
 ]]></Declaration>

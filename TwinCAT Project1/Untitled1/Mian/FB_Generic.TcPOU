@@ -26,6 +26,7 @@ VAR
 	i	: INT;
 	
 	ton_timeout			: TON;
+	iStateTemp			: INT;	
 	
 	rTrig_electricalError	:ARRAY[0..10] OF R_TRIG;
 	alarm_temp		: ST_Alarm;
