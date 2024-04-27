@@ -27,6 +27,7 @@ subscribed	:= TRUE;
 sComponent_name		:= 'fb_sample';
 iComponetID			:= 99;
 strState	:= ParseStateToString();
+infoLevel	:= ServerityLevelType.WARNING;
 
 ]]></ST>
     </Implementation>
@@ -107,8 +108,7 @@ CASE fbUnitModeManager.eModeStatus OF
 		ELSE
 			ton_timeout.IN	:=FALSE;
 			eStateTemp	:= eStates;	
-//			ParseStateToString();
-//			GenerateErrorMsg(errorType:='M',strState:=ParseStateToString(),moduleID:=100,iState	:= iStateTemp);
+			M_Log(eLogType:=ServerityLevelType.INFO,sTextLog:='');
 			IF ton_timeout.Q THEN
 				RETURN;
 			END_IF
@@ -117,9 +117,9 @@ CASE fbUnitModeManager.eModeStatus OF
 			ton_timeout.IN	:=FALSE;
 			CASE eStates OF	
 				E_SampleStates.ERROR:	
-					alarm_temp.Message	:= GenerateErrorMsg(errorType:='M',strState:=strState,iState := iStateTemp,errorMsg:='in error state.');
+					alarm_temp.Message	:= GenerateErrorMsg(errorType:='M',iState := iStateTemp,errorMsg:='in error state.');
 				ELSE
-				alarm_temp.Message	:= GenerateErrorMsg(errorType:='M',strState:=strState,iState := iStateTemp,errorMsg:='time out');
+				alarm_temp.Message	:= GenerateErrorMsg(errorType:='M',iState := iStateTemp,errorMsg:='time out');
 			END_CASE
 			
 //			CASE eStates OF		
@@ -367,6 +367,7 @@ END_CASE]]></ST>
       <LineId Id="29" Count="0" />
       <LineId Id="52" Count="3" />
       <LineId Id="57" Count="0" />
+      <LineId Id="70" Count="0" />
       <LineId Id="56" Count="0" />
       <LineId Id="14" Count="0" />
     </LineIds>
@@ -400,7 +401,6 @@ END_CASE]]></ST>
       <LineId Id="136" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="145" Count="5" />
-      <LineId Id="233" Count="0" />
       <LineId Id="232" Count="0" />
       <LineId Id="226" Count="2" />
       <LineId Id="151" Count="2" />

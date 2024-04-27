@@ -165,6 +165,9 @@
     <Compile Include="Mian\DUTs\Roller.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mian\DUTs\ServerityLevelType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mian\DUTs\ST_control_pannel.TcDUT">
       <SubType>Code</SubType>
     </Compile>

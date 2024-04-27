@@ -35,6 +35,7 @@ VAR
 	strState	: STRING;
 	sComponent_name			: STRING;
 	iComponetID				: INT;	
+	infoLevel	: ServerityLevelType;//should be set to high level after debug
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -172,16 +173,28 @@ END_VAR
       </Implementation>
     </Method>
     <Method Name="GenerateErrorMsg" Id="{73147bfe-a04c-4821-b872-4df6d90a07c9}">
-      <Declaration><![CDATA[METHOD GenerateErrorMsg : STRING
+      <Declaration><![CDATA[(*
+GenerateErrorMsg method:generate the error message according to the inputs
+generate example:'{M9906} fb_sample DETECTION time out for T#3s.'
+errorType:
+		'M':mechanical error
+		'E':electrical error
+		'S':safety error
+iState:state of state machine
+errorMsg:descirbe the error
+sComponent_name:defined in every componet
+iComponetID:defined in every componet
+strState:parseStateToString() to get the strState in ervery component
+sTimeout_setting:defined in every componet
+*)
+METHOD GenerateErrorMsg : STRING
 VAR_INPUT
 	errorType	: STRING;
-	strState	: STRING;
 	iState		: INT;
 	errorMsg	: STRING;	
 END_VAR
 VAR
 	errorID	: INT;
-	sTimeout_setting	: STRING;
 END_VAR
 
 ]]></Declaration>
@@ -203,22 +216,12 @@ GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,errorMsg);
 IF errorMsg='time out' THEN
 	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,' ');
 	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,'for ');
-	sTimeout_setting	:= TIME_TO_STRING(ton_timeout.PT);
-	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,sTimeout_setting);
+	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,TIME_TO_STRING(ton_timeout.PT));//timeout setting
 	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,'.');
 END_IF
 
 
 ]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="GenerateLogMsg" Id="{40c883da-c87f-4016-93f1-ffad0475c623}">
-      <Declaration><![CDATA[METHOD GenerateLogMsg : STRING
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Aborted" Id="{68860e43-9d33-4150-aa1b-f9759c02f24b}">
@@ -321,6 +324,24 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Log" Id="{40c883da-c87f-4016-93f1-ffad0475c623}">
+      <Declaration><![CDATA[(*
+M_Log method :will be show the text in the TwinCAT output window when using the IDE,and also in the windows event logger
+the method will filter out the logs who's type is above the info
+*)
+METHOD M_Log : STRING
+VAR_INPUT
+	eLogType	: ServerityLevelType;
+	sTextLog	: STRING;	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eLogType <= infoLevel THEN
+	ADSLOGSTR(msgCtrlMask:=Tc2_System.ADSLOG_MSGTYPE_LOG,msgFmtStr:=strState,strArg:='');	
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_mapping" Id="{ec417875-8527-44f0-83cf-875f1370e772}">
@@ -453,16 +474,12 @@ END_VAR
       <LineId Id="32" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="34" Count="0" />
-      <LineId Id="38" Count="0" />
       <LineId Id="41" Count="0" />
       <LineId Id="37" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="14" Count="0" />
       <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Generic.GenerateLogMsg">
-      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Aborted">
       <LineId Id="2" Count="0" />
@@ -501,6 +518,11 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Generic.M_Log">
+      <LineId Id="10" Count="0" />
+      <LineId Id="17" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_mapping">

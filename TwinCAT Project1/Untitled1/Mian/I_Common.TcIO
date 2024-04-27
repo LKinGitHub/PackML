@@ -7,21 +7,23 @@
       <Declaration><![CDATA[METHOD GenerateErrorMsg : STRING
 VAR_INPUT
 	errorType	: STRING;
-	strState	: STRING;
+//	strState	: STRING;
 	iState		: INT;
 	errorMsg	: STRING;
-END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="GenerateLogMsg" Id="{c3022895-c745-4eb6-9e87-3c32c8498265}">
-      <Declaration><![CDATA[METHOD GenerateLogMsg : STRING
-VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_Init" Id="{299d6f59-0f79-4ebd-bbde-3218fc2c181d}">
       <Declaration><![CDATA[METHOD M_Init : BOOL
 VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_Log" Id="{c3022895-c745-4eb6-9e87-3c32c8498265}">
+      <Declaration><![CDATA[METHOD M_Log : STRING
+VAR_INPUT
+	eLogType	: ServerityLevelType;
+	sTextLog	: STRING;
 END_VAR
 ]]></Declaration>
     </Method>
