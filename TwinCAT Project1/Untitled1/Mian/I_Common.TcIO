@@ -3,14 +3,18 @@
   <Itf Name="I_Common" Id="{44610be4-d804-4754-ab13-9ec4d915ccf3}">
     <Declaration><![CDATA[INTERFACE I_Common
 ]]></Declaration>
-    <Method Name="GenerateStrError" Id="{7ca6110f-3862-444c-8b03-b70132daa866}">
-      <Declaration><![CDATA[METHOD GenerateStrError : BOOL
+    <Method Name="GenerateErrorMsg" Id="{7ca6110f-3862-444c-8b03-b70132daa866}">
+      <Declaration><![CDATA[METHOD GenerateErrorMsg : STRING
 VAR_INPUT
+	errorType	: STRING;
+	strState	: STRING;
+	iState		: INT;
+	errorMsg	: STRING;
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="GenerateStrLog" Id="{c3022895-c745-4eb6-9e87-3c32c8498265}">
-      <Declaration><![CDATA[METHOD GenerateStrLog : BOOL
+    <Method Name="GenerateLogMsg" Id="{c3022895-c745-4eb6-9e87-3c32c8498265}">
+      <Declaration><![CDATA[METHOD GenerateLogMsg : STRING
 VAR_INPUT
 END_VAR
 ]]></Declaration>

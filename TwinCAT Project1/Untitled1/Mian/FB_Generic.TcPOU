@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_Generic" Id="{6731ada0-e7f3-4a4b-8534-5c6189c275ad}" SpecialFunc="None">
     <Declaration><![CDATA[//the functionblock FB_Generick is transmitted to every machineunit
-FUNCTION_BLOCK FB_Generic IMPLEMENTS ITF_UnitState,I_SubCallback
+FUNCTION_BLOCK FB_Generic IMPLEMENTS ITF_UnitState,I_SubCallback,I_Common
 VAR_INPUT
 	eModeCommand			: DINT;									//Mode from superior Unit
 	eCommand				: E_PMLCommand := ePMLCommand_Abort;	//Command for a new state from superior unit
@@ -31,6 +31,10 @@ VAR
 	alarm_temp		: ST_Alarm;
 	subscribed	: BOOL	:= FALSE;
 	subData		: PubSubData;
+	
+	strState	: STRING;
+	sComponent_name			: STRING;
+	iComponetID				: INT;	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -167,6 +171,56 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="GenerateErrorMsg" Id="{73147bfe-a04c-4821-b872-4df6d90a07c9}">
+      <Declaration><![CDATA[METHOD GenerateErrorMsg : STRING
+VAR_INPUT
+	errorType	: STRING;
+	strState	: STRING;
+	iState		: INT;
+	errorMsg	: STRING;	
+END_VAR
+VAR
+	errorID	: INT;
+	sTimeout_setting	: STRING;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GenerateErrorMsg	:= '';
+GenerateErrorMsg	:= CONCAT('{',errorType);
+IF iComponetID<10 THEN
+	errorID	:= iComponetID*1000+iState;
+ELSE
+	errorID	:= iComponetID*100+iState;
+END_IF
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,INT_TO_STRING(errorID));
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,'} ');
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,sComponent_name);
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,' ');
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,strState);
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,' ');
+GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,errorMsg);
+IF errorMsg='time out' THEN
+	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,' ');
+	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,'for ');
+	sTimeout_setting	:= TIME_TO_STRING(ton_timeout.PT);
+	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,sTimeout_setting);
+	GenerateErrorMsg	:= CONCAT(GenerateErrorMsg,'.');
+END_IF
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GenerateLogMsg" Id="{40c883da-c87f-4016-93f1-ffad0475c623}">
+      <Declaration><![CDATA[METHOD GenerateLogMsg : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_Aborted" Id="{68860e43-9d33-4150-aa1b-f9759c02f24b}">
       <Declaration><![CDATA[{attribute 'object_name' := 'M_Aborted'}
 METHOD M_Aborted
@@ -232,7 +286,8 @@ METHOD M_Completing
 METHOD M_Execute
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[M_StateComplete();]]></ST>
+        <ST><![CDATA[
+M_StateComplete();]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Held" Id="{4a3f8bde-f1b8-4aee-9633-d2a338539321}">
@@ -259,13 +314,22 @@ METHOD M_Idle
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_Init" Id="{0f5e224c-302b-446f-b95b-ee7e56e8f302}">
+      <Declaration><![CDATA[METHOD M_Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_mapping" Id="{ec417875-8527-44f0-83cf-875f1370e772}">
       <Declaration><![CDATA[METHOD M_mapping : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[alarm_temp.DateTime	:=GVL.packTags.Admin.PlcDateTime;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Resetting" Id="{bb8cf386-5782-4629-a5b7-1dc8d7ce9545}">
@@ -356,6 +420,15 @@ END_VAR
         <ST><![CDATA[M_StateComplete();]]></ST>
       </Implementation>
     </Method>
+    <Method Name="ParseStateToString" Id="{3a1137cc-985e-43fc-8c35-cc5b7b382f87}">
+      <Declaration><![CDATA[METHOD ParseStateToString : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_Generic">
       <LineId Id="143" Count="0" />
       <LineId Id="3" Count="115" />
@@ -363,6 +436,33 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Generic.Callback">
       <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Generic.GenerateErrorMsg">
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Generic.GenerateLogMsg">
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Aborted">
       <LineId Id="2" Count="0" />
@@ -388,6 +488,7 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Execute">
+      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Held">
@@ -398,6 +499,9 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Generic.M_Idle">
       <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Generic.M_Init">
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_mapping">
       <LineId Id="85" Count="0" />
@@ -432,6 +536,9 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Generic.M_Unsuspending">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Generic.ParseStateToString">
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
